@@ -1,0 +1,11 @@
+{
+  "name": "MA AI Assistant",
+  "description": "Premium Gold Edition AI Assistant with advanced analysis and automation features.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

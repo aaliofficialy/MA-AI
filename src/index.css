@@ -1,0 +1,115 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  
+  --color-gold-50: #fffbeb;
+  --color-gold-100: #fef3c7;
+  --color-gold-200: #fde68a;
+  --color-gold-300: #fcd34d;
+  --color-gold-400: #fbbf24;
+  --color-gold-500: #f59e0b;
+  --color-gold-600: #d97706;
+  --color-gold-700: #b45309;
+  --color-gold-800: #92400e;
+  --color-gold-900: #78350f;
+  --color-gold-950: #451a03;
+
+  --color-emerald-50: #ecfdf5;
+  --color-emerald-100: #d1fae5;
+  --color-emerald-200: #a7f3d0;
+  --color-emerald-300: #6ee7b7;
+  --color-emerald-400: #34d399;
+  --color-emerald-500: #10b981;
+  --color-emerald-600: #059669;
+  --color-emerald-700: #047857;
+  --color-emerald-800: #065f46;
+  --color-emerald-900: #064e3b;
+  --color-emerald-950: #022c22;
+
+  --color-violet-50: #f5f3ff;
+  --color-violet-100: #ede9fe;
+  --color-violet-200: #ddd6fe;
+  --color-violet-300: #c4b5fd;
+  --color-violet-400: #a78bfa;
+  --color-violet-500: #8b5cf6;
+  --color-violet-600: #7c3aed;
+  --color-violet-700: #6d28d9;
+  --color-violet-800: #5b21b6;
+  --color-violet-900: #4c1d95;
+  --color-violet-950: #2e1065;
+
+  --color-accent-50: var(--accent-50);
+  --color-accent-100: var(--accent-100);
+  --color-accent-200: var(--accent-200);
+  --color-accent-300: var(--accent-300);
+  --color-accent-400: var(--accent-400);
+  --color-accent-500: var(--accent-500);
+  --color-accent-600: var(--accent-600);
+  --color-accent-700: var(--accent-700);
+  --color-accent-800: var(--accent-800);
+  --color-accent-900: var(--accent-900);
+  --color-accent-950: var(--accent-950);
+}
+
+@layer base {
+  :root {
+    --accent-50: var(--color-gold-50);
+    --accent-100: var(--color-gold-100);
+    --accent-200: var(--color-gold-200);
+    --accent-300: var(--color-gold-300);
+    --accent-400: var(--color-gold-400);
+    --accent-500: var(--color-gold-500);
+    --accent-600: var(--color-gold-600);
+    --accent-700: var(--color-gold-700);
+    --accent-800: var(--color-gold-800);
+    --accent-900: var(--color-gold-900);
+    --accent-950: var(--color-gold-950);
+  }
+
+  [data-accent="emerald"] {
+    --accent-50: var(--color-emerald-50);
+    --accent-100: var(--color-emerald-100);
+    --accent-200: var(--color-emerald-200);
+    --accent-300: var(--color-emerald-300);
+    --accent-400: var(--color-emerald-400);
+    --accent-500: var(--color-emerald-500);
+    --accent-600: var(--color-emerald-600);
+    --accent-700: var(--color-emerald-700);
+    --accent-800: var(--color-emerald-800);
+    --accent-900: var(--color-emerald-900);
+    --accent-950: var(--color-emerald-950);
+  }
+
+  [data-accent="violet"] {
+    --accent-50: var(--color-violet-50);
+    --accent-100: var(--color-violet-100);
+    --accent-200: var(--color-violet-200);
+    --accent-300: var(--color-violet-300);
+    --accent-400: var(--color-violet-400);
+    --accent-500: var(--color-violet-500);
+    --accent-600: var(--color-violet-600);
+    --accent-700: var(--color-violet-700);
+    --accent-800: var(--color-violet-800);
+    --accent-900: var(--color-violet-900);
+    --accent-950: var(--color-violet-950);
+  }
+
+  body {
+    @apply bg-zinc-950 text-zinc-100 font-sans antialiased;
+  }
+}
+
+.glass {
+  @apply bg-zinc-900/50 backdrop-blur-xl border border-zinc-800;
+}
+
+.accent-gradient {
+  @apply bg-gradient-to-br from-accent-400 via-accent-500 to-accent-600;
+}
+
+.text-accent {
+  @apply text-transparent bg-clip-text bg-gradient-to-br from-accent-300 to-accent-600 font-bold;
+}
