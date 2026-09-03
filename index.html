@@ -3,27 +3,32 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="application-name" content="ALI — Affiliate Legal Intelligence" />
-    <meta name="description" content="ALI — Affiliate Legal Intelligence. AI-powered assistance for legal, business and information workflows." />
-    <title>ALI — Affiliate Legal Intelligence</title>
+    <meta name="application-name" content="A L I — Affiliate Legal Intelligence" />
+    <meta name="description" content="A L I — Affiliate Legal Intelligence. AI-powered assistance for legal, business and information workflows." />
+    <title>A L I — Affiliate Legal Intelligence</title>
     <script>
       (function () {
-        const BRAND = 'ALI';
+        const BRAND = 'A L I';
         const FULL = 'Affiliate Legal Intelligence';
-        const OLD = /MA Assistant|MA AI Assistant|MA AI|MA-AI/g;
+        const OLD = /Violet Edition|MA Assistant|MA AI Assistant|MA AI|MA-AI/g;
         document.title = BRAND + ' — ' + FULL;
         const replaceText = (node) => {
           if (node.nodeType === Node.TEXT_NODE) {
             if (OLD.test(node.nodeValue)) {
-              node.nodeValue = node.nodeValue.replace(OLD, function (match) {
-                return match === 'MA Assistant' ? BRAND : BRAND;
-              });
+              OLD.lastIndex = 0;
+              node.nodeValue = node.nodeValue.replace(OLD, BRAND);
             }
             return;
           }
           if (node.nodeType === Node.ELEMENT_NODE && node.tagName !== 'SCRIPT' && node.tagName !== 'STYLE') {
-            if (node.hasAttribute('placeholder')) node.setAttribute('placeholder', node.getAttribute('placeholder').replace(OLD, BRAND));
-            if (node.hasAttribute('title')) node.setAttribute('title', node.getAttribute('title').replace(OLD, BRAND));
+            if (node.hasAttribute('placeholder')) {
+              OLD.lastIndex = 0;
+              node.setAttribute('placeholder', node.getAttribute('placeholder').replace(OLD, BRAND));
+            }
+            if (node.hasAttribute('title')) {
+              OLD.lastIndex = 0;
+              node.setAttribute('title', node.getAttribute('title').replace(OLD, BRAND));
+            }
           }
         };
         const scan = () => {
