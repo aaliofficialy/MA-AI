@@ -3,11 +3,46 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My Google AI Studio App</title>
+    <meta name="application-name" content="ALI — Affiliate Legal Intelligence" />
+    <meta name="description" content="ALI — Affiliate Legal Intelligence. AI-powered assistance for legal, business and information workflows." />
+    <title>ALI — Affiliate Legal Intelligence</title>
+    <script>
+      (function () {
+        const BRAND = 'ALI';
+        const FULL = 'Affiliate Legal Intelligence';
+        const OLD = /MA Assistant|MA AI Assistant|MA AI|MA-AI/g;
+        document.title = BRAND + ' — ' + FULL;
+        const replaceText = (node) => {
+          if (node.nodeType === Node.TEXT_NODE) {
+            if (OLD.test(node.nodeValue)) {
+              node.nodeValue = node.nodeValue.replace(OLD, function (match) {
+                return match === 'MA Assistant' ? BRAND : BRAND;
+              });
+            }
+            return;
+          }
+          if (node.nodeType === Node.ELEMENT_NODE && node.tagName !== 'SCRIPT' && node.tagName !== 'STYLE') {
+            if (node.hasAttribute('placeholder')) node.setAttribute('placeholder', node.getAttribute('placeholder').replace(OLD, BRAND));
+            if (node.hasAttribute('title')) node.setAttribute('title', node.getAttribute('title').replace(OLD, BRAND));
+          }
+        };
+        const scan = () => {
+          const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+          const nodes = [];
+          while (walker.nextNode()) nodes.push(walker.currentNode);
+          nodes.forEach(replaceText);
+          document.querySelectorAll('[placeholder],[title]').forEach(replaceText);
+        };
+        const observer = new MutationObserver(() => scan());
+        document.addEventListener('DOMContentLoaded', () => {
+          scan();
+          observer.observe(document.body, { childList: true, subtree: true, characterData: true });
+        });
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
-
