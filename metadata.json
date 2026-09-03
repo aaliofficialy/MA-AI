@@ -1,6 +1,6 @@
 {
-  "name": "MA AI Assistant",
-  "description": "Premium Gold Edition AI Assistant with advanced analysis and automation features.",
+  "name": "ALI — Affiliate Legal Intelligence",
+  "description": "ALI — Affiliate Legal Intelligence: AI-powered assistance for legal, business and information workflows.",
   "requestFramePermissions": [
     "camera",
     "microphone"
