@@ -6,45 +6,9 @@
     <meta name="application-name" content="A L I — Affiliate Legal Intelligence" />
     <meta name="description" content="A L I — Affiliate Legal Intelligence. AI-powered assistance for legal, business and information workflows." />
     <title>A L I — Affiliate Legal Intelligence</title>
-    <script>
-      (function () {
-        const BRAND = 'A L I';
-        const FULL = 'Affiliate Legal Intelligence';
-        const OLD = /Violet Edition|MA Assistant|MA AI Assistant|MA AI|MA-AI/g;
-        document.title = BRAND + ' — ' + FULL;
-        const replaceValue = (value) => {
-          if (!value) return value;
-          return value.replace(OLD, function (match) {
-            return match === 'Violet Edition' ? FULL : BRAND;
-          });
-        };
-        const replaceText = (node) => {
-          if (node.nodeType === Node.TEXT_NODE) {
-            node.nodeValue = replaceValue(node.nodeValue);
-            return;
-          }
-          if (node.nodeType === Node.ELEMENT_NODE && node.tagName !== 'SCRIPT' && node.tagName !== 'STYLE') {
-            if (node.hasAttribute('placeholder')) node.setAttribute('placeholder', replaceValue(node.getAttribute('placeholder')));
-            if (node.hasAttribute('title')) node.setAttribute('title', replaceValue(node.getAttribute('title')));
-          }
-        };
-        const scan = () => {
-          const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
-          const nodes = [];
-          while (walker.nextNode()) nodes.push(walker.currentNode);
-          nodes.forEach(replaceText);
-          document.querySelectorAll('[placeholder],[title]').forEach(replaceText);
-        };
-        const observer = new MutationObserver(() => scan());
-        document.addEventListener('DOMContentLoaded', () => {
-          scan();
-          observer.observe(document.body, { childList: true, subtree: true, characterData: true });
-        });
-      })();
-    </script>
   </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+    <script type="module" src="./src/main.tsx"></script>
   </body>
 </html>
