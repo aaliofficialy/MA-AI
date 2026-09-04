@@ -59,7 +59,6 @@ export default function Sidebar({
 
   React.useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Focus search on Ctrl/Cmd + K
       if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
         e.preventDefault();
         searchInputRef.current?.focus();
@@ -87,8 +86,8 @@ export default function Sidebar({
             <Sparkles className="w-6 h-6 text-zinc-950" />
           </div>
           <div>
-            <h2 className="font-bold text-lg leading-tight tracking-tight text-white">MA Assistant</h2>
-            <span className="text-[10px] uppercase tracking-widest text-accent-500 font-bold opacity-80">{accent.charAt(0).toUpperCase() + accent.slice(1)} Edition</span>
+            <h2 className="font-bold text-lg leading-tight tracking-tight text-white">A L I</h2>
+            <span className="text-[10px] uppercase tracking-widest text-accent-500 font-bold opacity-80">Affiliate Legal Intelligence</span>
           </div>
         </div>
         {onClose && (
