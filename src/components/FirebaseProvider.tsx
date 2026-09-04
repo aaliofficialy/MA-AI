@@ -17,34 +17,50 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const [userData, setUserData] = useState<any | null>(null);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user: any) => {
-      setUser(user);
-      if (user) {
-        // Sync user data
-        const userRef = doc(db, 'users', user.uid);
+    let mounted = true;
+
+    const unsubscribe = onAuthStateChanged(auth, async (nextUser: any) => {
+      if (!mounted) return;
+      setUser(nextUser);
+      // Never block the whole application on optional profile syncing.
+      setLoading(false);
+
+      if (!nextUser) {
+        setUserData(null);
+        return;
+      }
+
+      try {
+        const userRef = doc(db, 'users', nextUser.uid);
         const userSnap = await getDoc(userRef);
-        
+
+        if (!mounted) return;
+
         if (!userSnap.exists()) {
           const newData = {
-            uid: user.uid,
-            email: user.email,
-            displayName: user.displayName,
+            uid: nextUser.uid,
+            email: nextUser.email,
+            displayName: nextUser.displayName,
             currentMode: 'personal',
             language: 'English',
-            createdAt: new Date().toISOString()
+            createdAt: new Date().toISOString(),
           };
           await setDoc(userRef, newData);
-          setUserData(newData);
+          if (mounted) setUserData(newData);
         } else {
           setUserData(userSnap.data());
         }
-      } else {
-        setUserData(null);
+      } catch (error) {
+        console.error('Profile sync skipped:', error);
+        // The app remains usable even if local profile storage is unavailable/corrupt.
+        if (mounted) setUserData(null);
       }
-      setLoading(false);
     });
 
-    return () => unsubscribe();
+    return () => {
+      mounted = false;
+      unsubscribe();
+    };
   }, []);
 
   return (
