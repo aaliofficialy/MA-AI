@@ -18,48 +18,75 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
   useEffect(() => {
     let mounted = true;
+    let unsubscribe: (() => void) | undefined;
 
-    const unsubscribe = onAuthStateChanged(auth, async (nextUser: any) => {
-      if (!mounted) return;
-      setUser(nextUser);
-      // Never block the whole application on optional profile syncing.
-      setLoading(false);
-
-      if (!nextUser) {
-        setUserData(null);
-        return;
+    // Safety net: the UI must never remain on the loading screen forever.
+    const loadingTimeout = window.setTimeout(() => {
+      if (mounted) {
+        console.warn('Auth initialization timeout; continuing as guest.');
+        setLoading(false);
       }
+    }, 3000);
 
-      try {
-        const userRef = doc(db, 'users', nextUser.uid);
-        const userSnap = await getDoc(userRef);
-
+    try {
+      unsubscribe = onAuthStateChanged(auth, async (nextUser: any) => {
         if (!mounted) return;
+        setUser(nextUser);
+        setLoading(false);
+        window.clearTimeout(loadingTimeout);
 
-        if (!userSnap.exists()) {
-          const newData = {
-            uid: nextUser.uid,
-            email: nextUser.email,
-            displayName: nextUser.displayName,
-            currentMode: 'personal',
-            language: 'English',
-            createdAt: new Date().toISOString(),
-          };
-          await setDoc(userRef, newData);
-          if (mounted) setUserData(newData);
-        } else {
-          setUserData(userSnap.data());
+        if (!nextUser) {
+          setUserData(null);
+          return;
         }
-      } catch (error) {
-        console.error('Profile sync skipped:', error);
-        // The app remains usable even if local profile storage is unavailable/corrupt.
-        if (mounted) setUserData(null);
+
+        try {
+          const userRef = doc(db, 'users', nextUser.uid);
+          const userSnap = await getDoc(userRef);
+
+          if (!mounted) return;
+
+          if (!userSnap.exists()) {
+            const newData = {
+              uid: nextUser.uid,
+              email: nextUser.email,
+              displayName: nextUser.displayName,
+              currentMode: 'personal',
+              language: 'English',
+              createdAt: new Date().toISOString(),
+            };
+            await setDoc(userRef, newData);
+            if (mounted) setUserData(newData);
+          } else {
+            setUserData(userSnap.data());
+          }
+        } catch (error) {
+          console.error('Profile sync skipped:', error);
+          if (mounted) setUserData(null);
+        }
+      });
+    } catch (error) {
+      console.error('Auth initialization failed; continuing as guest:', error);
+      if (mounted) {
+        setUser({
+          uid: 'guest_user',
+          email: 'guest@example.com',
+          displayName: 'Guest User',
+        });
+        setUserData(null);
+        setLoading(false);
       }
-    });
+      window.clearTimeout(loadingTimeout);
+    }
 
     return () => {
       mounted = false;
-      unsubscribe();
+      window.clearTimeout(loadingTimeout);
+      try {
+        unsubscribe?.();
+      } catch (error) {
+        console.warn('Auth cleanup skipped:', error);
+      }
     };
   }, []);
 
